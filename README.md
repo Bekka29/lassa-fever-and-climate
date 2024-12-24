@@ -97,7 +97,10 @@ To interpret the model, we used SHapley Additive exPlanations (SHAP), a game-the
 ### SHAP Equation
 The SHAP value for a feature **i** is calculated as:
 
-**ϕᵢ = Σ (S ⊆ F \ {i}) [(|S|! * (|F| - |S| - 1)!) / |F|!] * [f(S ∪ {i}) - f(S)]**
+$$
+\phi_i = \sum_{S \subseteq F \setminus \{i\}} \frac{|S|! \cdot (|F| - |S| - 1)!}{|F|!} \left( f(S \cup \{i\}) - f(S) \right)
+$$
+
 
 where:
 - **F**: Set of all features,
