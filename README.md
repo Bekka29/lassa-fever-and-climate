@@ -74,7 +74,10 @@ Parameter dimensions:
 ### Loss Function
 The loss function combines mean squared error and a regularization term:
 
-L(W, b) = E[(f(x_t-1) - x_t)^2] + λ * E[max(0, -x_t)]
+$$
+L(W, b) = \mathbb{E}[(f(x_{t-1}) - x_t)^2] + \lambda \mathbb{E}[\max(0, -x_t)]
+$$
+
 
 where:
 - **λ = 0.6**.
