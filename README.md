@@ -131,11 +131,14 @@ where:
    ```bash
    git clone https://github.com/your-username/lassa-fever-lstm.git
 2. Create a Python or Conda virtual environment:
-   ```conda create -n lassa-env python=3.8
+   ```bash
+   conda create -n lassa-env python=3.8
    conda activate lassa-env
 
 4. Install dependencies:
-   ```pip install -r requirements.txt
+   ```bash
+   pip install -r requirements.txt
 
 6. Run the training script:
-   ```python training.py
+   ```bash
+   python training.py
