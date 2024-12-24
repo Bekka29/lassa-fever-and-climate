@@ -5,10 +5,17 @@ This repository provides the implementation of an autoregressive model to predic
 ## Model Overview
 
 The model follows the autoregressive formulation:
-\[ x_t = f(x_{t-1}) \]
+
+**x<sub>t</sub> = f(x<sub>t-1</sub>)**
+
 where:
-- \( x_t \in \mathbb{R}^n \) is the vector of observed variables (including Lassa fever case counts) at time \( t \),
-- \( f \) is a non-linear vector-valued function implemented as a many-to-many LSTM network.
+- **x<sub>t</sub>** is the vector of observed variables (including Lassa fever case counts) at time **t**.
+- **f** is a non-linear vector-valued function implemented as a many-to-many LSTM network.
+
+### Key Features
+- **Primary Goal:** Forecast the number of Lassa fever cases.
+- **Secondary Benefits:** Predict other environmental variables contributing to the disease dynamics.
+- **Timeframe:** Weekly temporal resolution.
 
 ### Key Features
 - **Primary Goal:** Forecast the number of Lassa fever cases.
@@ -25,32 +32,36 @@ The network architecture is composed of:
 The overall architecture can be represented as:
 \[ x_t = f_{\text{linear}} \circ r \circ f_{\text{LSTM3}} \circ f_{\text{LSTM2}} \circ f_{\text{LSTM1}}(x_{t-1}) \]
 
-Each LSTM unit \( LSTM_i \) maintains:
-- A **hidden state** (\( h_t^{(i)} \)),
-- A **cell state** (\( c_t^{(i)} \)),
-- Learnable parameters including:
-  - Weight matrix \( W^{(i)} \in \mathbb{R}^{h \times d} \),
-  - Recurrent weight matrix \( U^{(i)} \in \mathbb{R}^{h \times d} \),
-  - Bias vector \( b^{(i)} \in \mathbb{R}^h \).
+Each LSTM unit **LSTM<sub>i</sub>** maintains:
+- A **hidden state** (**h<sub>t</sub><sup>(i)</sup>**),
+- A **cell state** (**c<sub>t</sub><sup>(i)</sup>**),
+- Learnable parameters:
+  - Weight matrix: **W<sup>(i)</sup>**,
+  - Recurrent weight matrix: **U<sup>(i)</sup>**,
+  - Bias vector: **b<sup>(i)</sup>**.
 
-The computation for \( LSTM_i \) includes:
-- Forget gate: \( f_t = \sigma(W_f^{(i)}x_t + U_f^{(i)}h_{t-1} + b_f^{(i)}) \)
-- Input gate: \( i_t = \sigma(W_i^{(i)}x_t + U_i^{(i)}h_{t-1} + b_i^{(i)}) \)
-- Cell update: \( \tilde{c}_t = \tanh(W_c^{(i)}x_t + U_c^{(i)}h_{t-1} + b_c^{(i)}) \)
-- Cell state: \( c_t = f_t \odot c_{t-1} + i_t \odot \tilde{c}_t \)
-- Output gate: \( o_t = \sigma(W_o^{(i)}x_t + U_o^{(i)}h_{t-1} + b_o^{(i)}) \)
-- Hidden state: \( h_t = o_t \odot \tanh(c_t) \)
+The computations for **LSTM<sub>i</sub>** include:
+- Forget gate:  
+  **f<sub>t</sub> = σ(W<sub>f</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>f</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>f</sub><sup>(i)</sup>)**
+- Input gate:  
+  **i<sub>t</sub> = σ(W<sub>i</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>i</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>i</sub><sup>(i)</sup>)**
+- Cell state:  
+  **c<sub>t</sub> = f<sub>t</sub> ⊙ c<sub>t-1</sub><sup>(i)</sup> + i<sub>t</sub> ⊙ tanh(W<sub>c</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>c</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>c</sub><sup>(i)</sup>)**
+- Output gate:  
+  **o<sub>t</sub> = σ(W<sub>o</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>o</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>o</sub><sup>(i)</sup>)**
+- Hidden state:  
+  **h<sub>t</sub> = o<sub>t</sub> ⊙ tanh(c<sub>t</sub>)**
 
 ### Model Parameters
-- Number of neurons per LSTM unit: \( h = 30 \)
-- Lookback period: \( T = 4 \) weeks
-- Dropout: 30%
-- Input dimension: \( x_t \in \mathbb{R}^7 \)
+- Neurons per LSTM unit: **30**
+- Lookback period: **4 weeks**
+- Dropout: **30%**
+- Input dimension: **7**
 
-Learnable parameter dimensions:
-- Weight matrix: \( W^{(i)} \in \mathbb{R}^{30 \times 7} \)
-- Recurrent weight matrix: \( U^{(i)} \in \mathbb{R}^{30 \times 7} \)
-- Bias vector: \( b^{(i)} \in \mathbb{R}^{30} \)
+Parameter dimensions:
+- Weight matrix: **W<sup>(i)</sup> ∈ R<sup>30×7</sup>**
+- Recurrent weight matrix: **U<sup>(i)</sup> ∈ R<sup>30×7</sup>**
+- Bias vector: **b<sup>(i)</sup> ∈ R<sup>30</sup>**
 
 ## Data and Training
 
@@ -58,14 +69,15 @@ Learnable parameter dimensions:
 - **Training Period**: 2018–2022.
 - **Testing Period**: 2023.
 - **Loss Function**:
-  \[
-  L(W, b) = \mathbb{E}[(f(x_{t-1}) - x_t)^2] + \lambda \mathbb{E}[\max(0, -x_t)]
-  \]
-  with \( \lambda = 0.6 \).
+L(W, b) = E[(f(x_{t-1}) - x_t)^2] + λE[max(0, -x_t)]
+
+markdown
+Copy code
+where **λ = 0.6**.
 - **Optimization**: ADAM optimizer.
 - **Hyperparameters**:
-  - Epochs: 2000
-  - Batch size: 32
+- Epochs: **2000**
+- Batch size: **32**
 
 ## Explainability with SHAP
 
@@ -108,43 +120,3 @@ Figures in the paper include:
 If you use this work, please cite:
 
 Rebekah L. G, Charles I.S, Yaknan J.G, Dominik B., Sabine D., Towards an Integrated Surveillance for Lassa fever: Evidence from the Predictive Modeling of Lassa fever Incidence in Nigeria, Journal Title, 2025
-
-
-Each LSTM unit **LSTM<sub>i</sub>** maintains:
-- A **hidden state** (**h<sub>t</sub><sup>(i)</sup>**),
-- A **cell state** (**c<sub>t</sub><sup>(i)</sup>**),
-- Learnable parameters:
-  - Weight matrix: **W<sup>(i)</sup>**,
-  - Recurrent weight matrix: **U<sup>(i)</sup>**,
-  - Bias vector: **b<sup>(i)</sup>**.
-
-The computations for **LSTM<sub>i</sub>** include:
-- Forget gate:  
-  **f<sub>t</sub> = σ(W<sub>f</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>f</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>f</sub><sup>(i)</sup>)**
-- Input gate:  
-  **i<sub>t</sub> = σ(W<sub>i</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>i</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>i</sub><sup>(i)</sup>)**
-- Cell state:  
-  **c<sub>t</sub> = f<sub>t</sub> ⊙ c<sub>t-1</sub><sup>(i)</sup> + i<sub>t</sub> ⊙ tanh(W<sub>c</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>c</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>c</sub><sup>(i)</sup>)**
-- Output gate:  
-  **o<sub>t</sub> = σ(W<sub>o</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>o</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>o</sub><sup>(i)</sup>)**
-- Hidden state:  
-  **h<sub>t</sub> = o<sub>t</sub> ⊙ tanh(c<sub>t</sub>)**
-
-### Model Parameters
-- Neurons per LSTM unit: **30**
-- Lookback period: **4 weeks**
-- Dropout: **30%**
-- Input dimension: **7**
-
-Parameter dimensions:
-- Weight matrix: **W<sup>(i)</sup> ∈ R<sup>30×7</sup>**
-- Recurrent weight matrix: **U<sup>(i)</sup> ∈ R<sup>30×7</sup>**
-- Bias vector: **b<sup>(i)</sup> ∈ R<sup>30</sup>**
-
-## Data and Training
-
-- **Dataset**: Weekly Lassa fever surveillance data (2018–2023) from Bauchi, Edo, and Ondo States, Nigeria.
-- **Training Period**: 2018–2022.
-- **Testing Period**: 2023.
-- **Loss Function**:
-
