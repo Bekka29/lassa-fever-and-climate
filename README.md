@@ -103,3 +103,8 @@ Figures in the paper include:
 2. Create a python or conda virtual environment
 3. pip install -r requirements.txt
 4. python training.py
+
+## Citation
+If you use this work, please cite:
+
+Rebekah L. G, Charles I.S, Yaknan J.G, Dominik B., Sabine D., Towards an Integrated Surveillance for Lassa fever: Evidence from the Predictive Modeling of Lassa fever Incidence in Nigeria, Journal Title, 2025
