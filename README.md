@@ -1,5 +1,3 @@
-# lassa-fever-and-climate
-Using climate and Lassa Fever Incidence data to identify correlation and predict possible occurences.
 # Lassa Fever Forecasting with Autoregressive LSTM Model
 
 This repository provides the implementation of an autoregressive model to predict Lassa fever case counts and related variables such as temperature, humidity, and precipitation. The model employs a Long Short-Term Memory (LSTM) recurrent neural network for robust time-series forecasting.
