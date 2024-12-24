@@ -108,3 +108,43 @@ Figures in the paper include:
 If you use this work, please cite:
 
 Rebekah L. G, Charles I.S, Yaknan J.G, Dominik B., Sabine D., Towards an Integrated Surveillance for Lassa fever: Evidence from the Predictive Modeling of Lassa fever Incidence in Nigeria, Journal Title, 2025
+
+
+Each LSTM unit **LSTM<sub>i</sub>** maintains:
+- A **hidden state** (**h<sub>t</sub><sup>(i)</sup>**),
+- A **cell state** (**c<sub>t</sub><sup>(i)</sup>**),
+- Learnable parameters:
+  - Weight matrix: **W<sup>(i)</sup>**,
+  - Recurrent weight matrix: **U<sup>(i)</sup>**,
+  - Bias vector: **b<sup>(i)</sup>**.
+
+The computations for **LSTM<sub>i</sub>** include:
+- Forget gate:  
+  **f<sub>t</sub> = σ(W<sub>f</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>f</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>f</sub><sup>(i)</sup>)**
+- Input gate:  
+  **i<sub>t</sub> = σ(W<sub>i</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>i</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>i</sub><sup>(i)</sup>)**
+- Cell state:  
+  **c<sub>t</sub> = f<sub>t</sub> ⊙ c<sub>t-1</sub><sup>(i)</sup> + i<sub>t</sub> ⊙ tanh(W<sub>c</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>c</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>c</sub><sup>(i)</sup>)**
+- Output gate:  
+  **o<sub>t</sub> = σ(W<sub>o</sub><sup>(i)</sup>x<sub>t</sub> + U<sub>o</sub><sup>(i)</sup>h<sub>t-1</sub><sup>(i)</sup> + b<sub>o</sub><sup>(i)</sup>)**
+- Hidden state:  
+  **h<sub>t</sub> = o<sub>t</sub> ⊙ tanh(c<sub>t</sub>)**
+
+### Model Parameters
+- Neurons per LSTM unit: **30**
+- Lookback period: **4 weeks**
+- Dropout: **30%**
+- Input dimension: **7**
+
+Parameter dimensions:
+- Weight matrix: **W<sup>(i)</sup> ∈ R<sup>30×7</sup>**
+- Recurrent weight matrix: **U<sup>(i)</sup> ∈ R<sup>30×7</sup>**
+- Bias vector: **b<sup>(i)</sup> ∈ R<sup>30</sup>**
+
+## Data and Training
+
+- **Dataset**: Weekly Lassa fever surveillance data (2018–2023) from Bauchi, Edo, and Ondo States, Nigeria.
+- **Training Period**: 2018–2022.
+- **Testing Period**: 2023.
+- **Loss Function**:
+
