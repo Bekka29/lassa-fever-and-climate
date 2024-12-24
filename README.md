@@ -74,7 +74,7 @@ Parameter dimensions:
 ### Loss Function
 The loss function combines mean squared error and a regularization term:
 
-**L(W, b) = E[(f(xₜ₋₁) - xₜ)²] + λ E[max(0, -xₜ)]**
+L(W, b) = E[(f(x_t-1) - x_t)^2] + λ * E[max(0, -x_t)]
 
 where:
 - **λ = 0.6**.
@@ -124,3 +124,12 @@ where:
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/lassa-fever-lstm.git
+2. Create a Python or Conda virtual environment:
+   conda create -n lassa-env python=3.8
+   conda activate lassa-env
+
+4. Install dependencies:
+   pip install -r requirements.txt
+
+6. Run the training script:
+   python training.py
