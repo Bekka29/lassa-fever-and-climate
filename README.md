@@ -132,13 +132,11 @@ where:
    git clone https://github.com/your-username/lassa-fever-lstm.git
 2. Create a Python or Conda virtual environment:
    ```bash
-   conda create -n lassa-env python=3.8
+   conda create -n lassa-env python=3.10.13
    conda activate lassa-env
 
-4. Install dependencies:
+3. Run Notebooks:
    ```bash
-   pip install -r requirements.txt
+   Install Jupyter notebook
+   Run Main_lassa_weekly_prediction_all.ipynb 
 
-6. Run the training script:
-   ```bash
-   python training.py
