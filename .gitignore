@@ -1,0 +1,15 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv_lassa/
+.uv/
+
+# Environment files and caches
+.env
+.envrc
+.cache/
+*.egg-info/

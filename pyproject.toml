@@ -1,0 +1,23 @@
+[project]
+name = "lassa_forecasting"
+version = "0.1.0"
+description = "Multi-Model Forecasting of Lassa Fever Using Climate-Informed MAR and LSTM Approaches"
+dependencies = [
+    "jupyter",
+    "notebook",
+    "ipykernel",
+    "shap",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "seaborn",
+    "scipy",
+    "statsmodels",
+    "openpyxl",
+    "torch",
+    "torchvision",
+    "torchmetrics"
+]
+
+[tool.setuptools]
+packages = ["models.mar", "models.lstm", "utils"]

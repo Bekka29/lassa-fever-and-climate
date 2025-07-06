@@ -1,0 +1,12 @@
+Early stop for Bauchi is 10
+Early stop for Edo is 15
+
+
+Best performing model
+
+4 lstm layers
+30 hidden neurons
+
+Bidirectional
+early stop did not matter
+
